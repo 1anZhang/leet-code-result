@@ -1,49 +1,43 @@
 /**
+ * 此类问题可以归类为寻找两个有序数组中第k大的某个数，那么如何能够寻找到第k大的某个数呢
+ * 首先我们能够获取到k/2，
+ */
+
+/**
  * @param {number[]} nums1
  * @param {number[]} nums2
  * @return {number}
  */
-function findMiddleNum(arr) {
-    if (arr.length % 2 === 1) {
-        let mid = (arr.length - 1) / 2;
-        return arr[mid]; 
-    } else {
-        let mid = arr.length / 2;
-        return (arr[mid] + arr[mid - 1]) / 2; 
-    }
-}
 var findMedianSortedArrays = function(nums1, nums2) {
-    let mid1 = Math.floor((nums1.length - 1) / 2);
-    let mid2 = Math.floor((nums2.length -1) / 2);
-    let num1 = nums1[mid1];
-    let num2 = nums2[mid2];
-    while(num1 !== undefined || num2 !== undefined) {
-        if (num1 === num2) {
-            return num1;
-        }
-        if (!num1) {
-            return findMiddleNum(nums2);
-        }
-        if (!num2) {
-            return findMiddleNum(nums1);
-        }
-        if (num1 > num2) {
-            let min = Math.min(mid1, mid2);
-            nums1.splice(nums1.length - min - 1, nums1.length);
-            nums2.splice(0, min + 1);
+    if (nums1.length > nums2.length) return findMedianSortedArrays(nums2, nums1);
+    let x = nums1.length;
+    let y = nums2.length;
+    let left = 0, right = x;
+    while( left <= right) {
+        let middle = Math.floor((x + y + 1) / 2);
+        let partX = Math.floor((left + right) / 2);
+        let partY = middle - partX;
+
+        let maxLeftX =  partX === 0 ? -Infinity : nums1[partX - 1];
+        let minRightX = partX === x ? Infinity : nums1[partX];
+        let maxLeftY = partY === 0 ? -Infinity : nums2[partY - 1];
+        let minRightY = partY === y ? Infinity : nums2[partY];
+
+        if (maxLeftX <= minRightY && maxLeftY <= minRightX) {
+            if ((x + y) % 2 === 0) {
+                return (Math.max(maxLeftX, maxLeftY) + Math.min(minRightX, minRightY)) / 2;
+            } else {
+                return Math.max(maxLeftX, maxLeftY);
+            }
+        } else if (maxLeftX > minRightY){
+            right = partX - 1;
         } else {
-            let min = Math.min(mid1, mid2);
-            nums2.splice(nums2.length - min - 1, nums2.length);
-            nums1.splice(0, min + 1);
+            left = partX + 1;
         }
-        mid1 = Math.floor((nums1.length - 1) / 2);
-        mid2 = Math.floor((nums2.length -1) / 2);
-        num1 = nums1[mid1];
-        num2 = nums2[mid2];
     }
 };
 
-let arr1 = [1, 3];
-let arr2 = [2];
+let arr1 = [1,2];
+let arr2 = [3,4];
 let res = findMedianSortedArrays(arr1, arr2);
 console.log(JSON.stringify(res));
