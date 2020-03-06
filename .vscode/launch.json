@@ -8,7 +8,7 @@
             "type": "node",
             "request": "launch",
             "name": "Launch Program",
-            "program": "${workspaceFolder}/8. 字符串转换整数 (atoi)/index.js"
+            "program": "${workspaceFolder}/567. 字符串的排列/index.js"
         }
     ]
 }

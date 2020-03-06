@@ -3,23 +3,26 @@
  * @return {number}
  */
 var lengthOfLongestSubstring = function(s) {
-    if (!s) return 0;
-    let total = 0, tempStr = '';
-    for (let index = 0; index < s.length; index++) {
+    let len = s.length;
+    if (len === 0 || len === 1) return len;
+    let start = 0, max = 0, cur=0;
+    const map = new Map();
+    for (let index = 0; index < len; index++) {
         const element = s[index];
-        let strIndex = tempStr.indexOf(element);
-        if (strIndex === -1) {
-            tempStr += element;
-            total = total > tempStr.length ? total : tempStr.length;
+        let i = map.get(element);
+        if (i != null && i >= start) {
+            start = i;
+            cur = index - start;
         } else {
-            tempStr = tempStr.substr(strIndex + 1, tempStr.length);
-            tempStr += element;
-            total = total > tempStr.length ? total : tempStr.length;
+            cur++;
         }
+        map.set(element, index);
+        max = max > cur ? max : cur;
     }
-    return total;
+    return max;
 };
 
-let input = '0qwerwedasfsajfkjahdsicasivhiuapsfha'
+// let input = '0qwerwedasfsajfkjahdsicasivhiuapsfha';
+let input = "pwwkew";
 let output = lengthOfLongestSubstring(input);
 console.log(output);
