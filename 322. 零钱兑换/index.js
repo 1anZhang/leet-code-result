@@ -29,7 +29,7 @@ var coinChange1 = function (coins, amount) {
 };
 
 /**
- * 使用dp table
+ * 使用dp table, 从下向上依次算出每个值的结果，循环的出口是给定的amount
  * @param {number[]} coins
  * @param {number} amount
  * @return {number}
